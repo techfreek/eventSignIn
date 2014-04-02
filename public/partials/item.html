@@ -1,0 +1,46 @@
+<div class="page-header">
+	<h1>View Event</h1>
+</div>
+<div class="well well-lg">
+	<strong>Event</strong><br>{{Event.name}}
+</div>
+
+<div ng-hide="Event.userVoted">
+	<p class="lead">Please select one of the following options:</p>
+
+	<form role="form" ng-submit="vote()">
+			<div class="form-group">
+				<label for="attendeeName">Name</label>
+				<input type="text" class="form-control" ng-model="Event.name" id="AttendeeName" placeholder="Your Name">
+			</div>
+		<p><hr></p>
+		<div class="row">
+			<div class="col-xs-6">
+				<a href="#/events" class="btn btn-default" role="button"><span class="glyphicon glyphicon-arrow-left"></span> Back to Event List</a>
+			</div>
+			<div class="col-xs-6">
+				<button class="btn btn-primary pull-right" type="submit">Submit &raquo;</button>
+			</div>
+		</div>
+	</form>
+</div>
+	
+<div ng-show="Event.userVoted">
+	<table class="result-table">
+		<tr ng-repeat="attendee in Event">
+			<td>{{attendee.name}}</td>
+		</tr>
+	</table>
+			
+	<p>
+		<em>
+			{{Event.totalAttendee}} votes counted so far.
+		</em>
+	</p>
+	
+	<p><hr></p>
+	
+	<p><a href="#/polls" class="btn btn-default" role="button"><span class="glyphicon glyphicon-arrow-left"></span> Back to Event List</a></p>
+</div>
+
+<p>&nbsp;</p>
