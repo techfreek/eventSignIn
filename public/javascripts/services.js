@@ -1,7 +1,7 @@
 // Angular service module for connecting to JSON APIs
 angular.module('eventServices', ['ngResource']).
 	factory('Event', function($resource) {
-		return $resource('event/:eventId', {}, {
+		return $resource('events/:id', {}, {
 			// Use this method for getting a list of polls
 			query: { method: 'GET', params: { eventId: 'events' }, isArray: true }
 		})

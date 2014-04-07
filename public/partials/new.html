@@ -2,7 +2,7 @@
 	<h1>Create New Event</h1>
 </div>
 
-<form class="form-horizontal" role="form" ng-submit="createEvent()">
+<form class="form-horizontal" role="form" ng-submit="createEvent()" ng-controller="EventNewCtrl">
 	<div class="form-group">
 		<label for="EventQuestion" class="col-xs-3">Event</label>
 		<input type="text" ng-model="Event.name" class="form-control col-xs-9" id="EventQuestion" placeholder="Enter Event Name">

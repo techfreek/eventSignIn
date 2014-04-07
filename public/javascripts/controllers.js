@@ -41,27 +41,27 @@ function EventNewCtrl($scope, $location, Event) {
 	$scope.Event = {
 		name: '',
 		club: '',
-		open: '',
-	};
-	
+		open: true
+	}
 	
 	// Validate and save the new Event to the database
 	$scope.createEvent = function() {
-		var Event = $scope.Event;
-		
-		// Check that a question was provided
-		if(Event.name.length > 0) {
-			if(Event.club.length > 0) {
-				var newEvent = new Event(Event);
+		// Check that an event and club were provided
+		if($scope.Event.name != '') {
+			if($scope.Event.club  != '') {
+				var newEvent = new Event($scope.Event);
+				console.log("New event!");
 				newEvent.$save(function(p, resp) {
 					if(!p.error) {
 						//If there is no error, redirect to main view
 						$location.path('event');
-					} else {
+						console.log("Success!");
+					} 
+					else {
 						alert('Could not create event');
 					}
-				})
-			}
-		}
+				});
+			};
+		};
 	};
 }

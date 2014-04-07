@@ -27,14 +27,14 @@ exports.list = function(req, res) {
 
 // JSON API for getting a single poll
 exports.event = function(req, res) {
+	console.log("Event");
 	// Poll ID comes in the URL
 	var eventId = req.params.id;
 	
 	// Find the poll by its ID, use lean as we won't be changing it
 	Event.findById(eventId, '', { lean: true }, function(err, _event) {
 		if(_event) {
-			var userVoted = false,
-					totalAttendee = 0;
+			var userVoted = false, totalAttendee = 0;
 
 			for(v in _event.votes) {
 				totalVotes++;
@@ -57,11 +57,11 @@ exports.event = function(req, res) {
 };
 
 // JSON API for creating a new poll
-exports.create = function(req, res) {
+exports.createEvent = function(req, res) {
+	console.log("CreateEvent");
 	var reqBody = req.body,
-
-			// Build up poll object to save
-			eventObj = {ename: reqBody.name, club: reqBody.club};
+	// Build up poll object to save
+	eventObj = {ongoing: reqBody.open, eventname: reqBody.name, clubname: reqBody.club};
 				
 	// Create poll model from built up poll object
 	var _event = new Event(eventObj);
@@ -77,6 +77,7 @@ exports.create = function(req, res) {
 };
 
 exports.vote = function(socket) {
+	console.log("Vote");
 	socket.on('send:vote', function(data) {
 		var ip = socket.handshake.headers['x-forwarded-for'] || socket.handshake.address.address;
 		

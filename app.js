@@ -30,9 +30,9 @@ app.get('/', routes.index);
 
 // MongoDB API Routes
 app.get('/events/events', routes.list);
-app.get('/events/:id', routes.poll);
-app.post('/events', routes.create);
-app.post('/vote', routes.vote);
+app.get('/events/:id', function(){routes.poll});
+app.post('/events', function(){routes.create});
+app.post('/vote', function(){routes.vote});
 
 io.sockets.on('connection', routes.vote);
 
