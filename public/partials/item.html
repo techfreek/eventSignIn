@@ -6,8 +6,6 @@
 </div>
 <!---->
 <div ng-hide="voted">
-	<p class="lead">Please select one of the following options:</p>
-
 	<form role="form" ng-submit="sign()">
 			<div class="form-group">
 				<label for="attendeeName">Name</label>
@@ -35,7 +33,7 @@
 			
 	<p>
 		<em>
-			{{Event.totalAttendee}} votes counted so far.
+			{{Event.totalAttendee}} have signed in.
 		</em>
 	</p>
 	

@@ -1,0 +1,90 @@
+<div class="page-header">
+	<h1>Edit Event</h1>
+</div>
+<div class="well well-lg">
+	<strong>Event</strong><br>{{Event.name}}
+</div>
+
+<div ng-hide="loggedin">
+	<form class-"form-horizontal css-form" role="form" ng-submit="login()" ng-controller="EventEditCtrl">
+		<div class="form-group">
+					<label for="attendeeName">Name</label>
+					<input type="text" class="form-control" ng-model="password" id="AttendeeName" placeholder="Your Name">
+				</div>
+			<p><hr></p>
+			<div class="row">
+				<div class="col-xs-6">
+					<a href="#/events" class="btn btn-default" role="button"><span class="glyphicon glyphicon-arrow-left"></span> Back to Event List</a>
+				</div>
+				<div class="col-xs-6">
+					<button class="btn btn-primary pull-right" type="submit">Submit &raquo;</button>
+				</div>
+			</div>
+	</form>
+</div>
+
+<div ng-show"loggedin">
+
+	<div ng-show="view">
+		<table>
+				<thead>
+					<td>User Name</td>
+					<td>Time</td>
+				</thead>
+		<div ng-repeat="user in attendees">
+				<tr>
+					<td>{{user.name}}</td>
+					<td>{{user.timestamp}}</td>
+				</td>
+		</div>
+		</table>
+		<form class="form-horizontal css-form" role="form" ng-submit="changeView()" ng-controller="EventEditCtrl">
+			<div class="row">
+				<div class="col-xs-6">
+					<a href="#/events/{{Event.eventId}}" class="btn btn-default" role="button"><span class="glyphicon glyphicon-arrow-left"></span> Back to Event List</a>
+				</div>
+				<div class="col-xs-6">
+					<button class="btn btn-primary pull-right" type="submit">Edit Event &raquo;</button>
+				</div>
+			</div>
+		</form>
+	</div>
+
+	<div ng-show="edit">
+		<form class="form-horizontal css-form" role="form" ng-submit="updateEvent()" ng-controller="EventEditCtrl">
+			<div class="form-group">
+				<label for="EventQuestion" class="col-xs-3">Event (required)</label>
+				<input type="text" ng-model="Event.name" class="form-control col-xs-9" id="EventQuestion" placeholder="Enter Event Name" required>
+			</div>
+			
+			<div class="form-group">
+				<label for="EventClub" class="col-xs-3">Club Name (required)</label>
+				<input type="text" ng-model="Event.club" class="form-control col-xs-9" id="EventClub" placeholder="Enter Club Name" required>
+			</div>
+
+			<div class="form-group">
+				<label for="EventClub" class="col-xs-3">Password (required)</label>
+				<input type="text" ng-model="Event.pw" class="form-control col-xs-9" id="EventClub" placeholder="Use this to open/close the event" required>
+			</div>
+
+			<div class="checkbox">
+				<label>
+			    	<input type="checkbox" ng-model="Event.open" value="">
+			    		This event is currently going on!
+			  	</label>
+			</div>	
+			<br />
+			<form class="form-horizontal css-form" role="form" ng-submit="changeView()" ng-controller="EventEditCtrl">
+			<div class="row">
+				<div class="col-xs-6">
+					<a href="#/events/{{Event.eventId}}" class="btn btn-default" role="button"><span class="glyphicon glyphicon-arrow-left"></span> Back to Event List</a>
+				</div>
+				<div class="col-xs-6">
+					<button class="btn btn-primary pull-right" type="submit">View Results &raquo;</button>
+				</div>
+			</div>
+		</form>
+	</div>
+
+
+</div>

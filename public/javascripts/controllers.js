@@ -53,7 +53,7 @@ function EventNewCtrl($scope, $location, Event) {
 	$scope.Event = {
 		name: '',
 		club: '',
-		pw: '',
+		pw: 'For now, this is not encrypted. Please do not use one of your normal passwords',
 		open: true
 	}
 	
@@ -79,4 +79,54 @@ function EventNewCtrl($scope, $location, Event) {
 			};
 		};
 	};
+}
+
+function EventEditCtrl($scope, $location, Event) {
+	$scope.Event = Event.get({id: $routeParams.eventId});
+	$scope.loggedin = false;
+	$scope.view = false;
+	$scope.edit = false;
+
+	$scope.login = function() {
+		if($scope.Event.pw == $scope.password)
+		{
+			$scope.loggedin = true;
+			$scope.view = true;
+			$scope.attendees = Sign.get({EventID: $routeParams.EventId})
+
+		} else {
+			//Nope
+		}
+	}
+	$scope.changeView = function() {
+		if($scope.view == false {
+			edit = false;
+			view = true;
+		}
+	}
+	socket.on('sig', function(data) {
+		console.log(data);
+		if(data._id === $routeParams.EventId) {
+			$scope.Event.totalAttendee = data.sigs;
+			$scope.attendees.push(data.user);
+		}		
+	});
+	$scope.updateEvent = function() {
+		if($scope.Event.pw == $scope.password)
+		{
+			var _Event = new Event($scope.Event);
+			_Event.$save(function(p, resp) {
+					if(!p.error) {
+						//If there is no error, redirect to main view
+						$location.path('event');
+						console.log("Success!");
+					} 
+					else {
+						alert('Could not create event');
+						console.log(p);
+					}
+					console.log(resp);
+				});
+		}
+	}
 }
