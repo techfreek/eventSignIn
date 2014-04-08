@@ -2,15 +2,20 @@
 	<h1>Create New Event</h1>
 </div>
 
-<form class="form-horizontal" role="form" ng-submit="createEvent()" ng-controller="EventNewCtrl">
+<form class="form-horizontal css-form" role="form" ng-submit="createEvent()" ng-controller="EventNewCtrl">
 	<div class="form-group">
-		<label for="EventQuestion" class="col-xs-3">Event</label>
-		<input type="text" ng-model="Event.name" class="form-control col-xs-9" id="EventQuestion" placeholder="Enter Event Name">
+		<label for="EventQuestion" class="col-xs-3">Event (required)</label>
+		<input type="text" ng-model="Event.name" class="form-control col-xs-9" id="EventQuestion" placeholder="Enter Event Name" required>
 	</div>
 	
 	<div class="form-group">
-		<label for="EventClub" class="col-xs-3">Club Name</label>
-		<input type="text" ng-model="Event.club" class="form-control col-xs-9" id="EventClub" placeholder="Enter Club Name">
+		<label for="EventClub" class="col-xs-3">Club Name (required)</label>
+		<input type="text" ng-model="Event.club" class="form-control col-xs-9" id="EventClub" placeholder="Enter Club Name" required>
+	</div>
+
+	<div class="form-group">
+		<label for="EventClub" class="col-xs-3">Password (required)</label>
+		<input type="text" ng-model="Event.pw" class="form-control col-xs-9" id="EventClub" placeholder="Use this to open/close the event" required>
 	</div>
 
 	<div class="checkbox">
@@ -19,7 +24,7 @@
 	    		This event is currently going on!
 	  	</label>
 	</div>	
-	
+	<br />
 	<div class="row">
 		<div class="col-xs-6">
 			<a href="#/polls" class="btn btn-default" role="button"><span class="glyphicon glyphicon-arrow-left"></span> Back to Event List</a>
@@ -28,6 +33,4 @@
 			<button class="btn btn-primary pull-right" type="submit">Create Event &raquo;</button>
 		</div>
 	</div>
-	
-	<p>&nbsp;</p>
 </form>

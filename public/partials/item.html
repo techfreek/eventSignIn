@@ -4,14 +4,14 @@
 <div class="well well-lg">
 	<strong>Event</strong><br>{{Event.name}}
 </div>
-
-<div ng-hide="Event.userVoted">
+<!--ng-hide="Event.userVoted"-->
+<div >
 	<p class="lead">Please select one of the following options:</p>
 
-	<form role="form" ng-submit="vote()">
+	<form role="form" ng-submit="sign()">
 			<div class="form-group">
 				<label for="attendeeName">Name</label>
-				<input type="text" class="form-control" ng-model="Event.name" id="AttendeeName" placeholder="Your Name">
+				<input type="text" class="form-control" ng-model="signature.name" id="AttendeeName" placeholder="Your Name">
 			</div>
 		<p><hr></p>
 		<div class="row">
@@ -24,8 +24,9 @@
 		</div>
 	</form>
 </div>
-	
-<div ng-show="Event.userVoted">
+
+<!--ng-show="Event.userVoted"-->
+<div >
 	<table class="result-table">
 		<tr ng-repeat="attendee in Event">
 			<td>{{attendee.name}}</td>

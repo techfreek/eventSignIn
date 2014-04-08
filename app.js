@@ -30,11 +30,13 @@ app.get('/', routes.index);
 
 // MongoDB API Routes
 app.get('/events/events', routes.list);
-app.get('/events/:id', function(){routes.poll});
-app.post('/events', function(){routes.create});
-app.post('/vote', function(){routes.vote});
+app.get('/events/:id', routes.event);
+//app.put('/events', function(){routes.createEvent});
+app.post('/events', routes.createEvent);
+app.post('/sign', routes.sign);
+//app.post('/vote', function(){routes.vote});
 
-io.sockets.on('connection', routes.vote);
+io.sockets.on('connection', routes.sign);
 
 server.listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

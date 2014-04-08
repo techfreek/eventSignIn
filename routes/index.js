@@ -1,3 +1,132 @@
+var mongo = require('mongodb');
+
+var Server = mongo.Server,
+	DB = mongo.Db,
+	BSON = mongo.BSONPure;
+
+var server = new Server('localhost', 27017, {auto_reconnect: true});
+var eventDB = new DB('eventDB', server, {safe:false});
+
+eventDB.open(function(err, db) {
+	if(!err) {
+		//console.log("Connected to database");
+		eventDB.collection('events', {strict: true}, function(err, collection) {
+			if(err) {
+				console.log("'Events' collection doesn't exist yet.")
+			}
+		});
+	}
+});
+
+exports.index = function(req, res) {
+	res.render('index');
+};
+
+exports.list = function (req, res) {
+	eventDB.collection('events', function(err, collection) {
+		collection.find().toArray(function(err, items) {
+			res.send(items);
+		});
+	});
+};
+
+exports.event = function(req, res) {
+	var id = req.params.id;
+	console.log("Looking up: " + id);
+	eventDB.collection('events', function(err, collection) {
+		collection.findOne({'_id':new BSON.ObjectID(id)}, function(err, item) {
+			res.send(item);
+		});
+	});
+};
+
+exports.createEvent = function (req, res) {
+	var newEvent = req.body;
+	console.log("Adding event" + JSON.stringify(newEvent));
+	eventDB.collection('events', function(err, collection) {
+		collection.insert(newEvent, {safe: true}, function(err, result) {
+			if (err) {
+				console.log('Error inserting' + JSON.stringify(newEvent));
+				console.log('Error code: ' + err);
+				res.send({'error': 'An error has occured'});
+
+			} else {
+				console.log('Success! ' + JSON.stringify(result[0]));
+				res.send(result[0]);
+			}
+		});
+	});
+};
+
+exports.sign = function(socket) {
+	socket.on('send:vote', function(data) {
+		var ip = socket.handshake.headers['x-forwarded-for'] || socket.handshake.address.address;
+		var signatures = 0;
+		data.ip = ip;
+		console.log(data);
+		eventDB.collection('logins', function(err, collection) {
+			collection.insert(data, {safe: true}, function(err, result) {
+				if(err) {
+					console.log("An error occured");
+				} else {
+					console.log(data.name + " has signed in!");
+					//socket.broadcast.emit('signed', data)
+				}
+			});
+			collection.count({'EventID':data.eventID}, function(err, result) {
+				console.log("result: " + result);
+				console.log("Error: " + err);
+				//console.log("Length: " + result.length);
+			});
+			//collection.runCommand( {count: 'logins', query: {EventID: new BSON.serialize(data.eventID)}})
+			socket.emit('signed', {name: data.name, sigs: signatures});
+		});
+	});
+};
+
+/*Event.findById(data.event_id, function(err, _event) {
+			var choice = poll.choices.id(data.choice);
+			
+			_event.save(function(err, doc) {
+				var theDoc = { 
+					uname: doc.name, 
+					userVoted: false, totalVotes: 0 
+				};
+				
+				socket.emit('myvote', theDoc);
+				socket.broadcast.emit('vote', theDoc);
+			});			
+		});
+	});*/
+
+
+
+/*exports.update = function(req, res) {
+	var eventID = req.params.id;
+	var editedEvent = req.body;
+	console.log("Updating: " + eventID);
+	eventDB.collection('events', function(err, collection) {
+		collection.update({'_id': new BSON.ObjectID(id)}, editedEvent, {safe: true}, function(err, result) {
+			if(err) {
+				console.log('Error updating event: ' + err);
+				res.send({'error': 'Couldn\'t update event'});
+			} else {
+				console.log('' + result + 'document(s) updated');
+				res.send(editedEvent);
+			}
+		});
+	});
+};
+
+*/
+
+
+
+
+
+
+/*
+
 // Connect to MongoDB using Mongoose
 var mongoose = require('mongoose');
 var db;
@@ -67,7 +196,7 @@ exports.createEvent = function(req, res) {
 	var _event = new Event(eventObj);
 	
 	// Save poll to DB
-	_event.save(function(err, doc) {
+	Event.events.save(_event, function(err, doc) {
 		if(err || !doc) {
 			throw 'Error';
 		} else {
@@ -96,3 +225,5 @@ exports.vote = function(socket) {
 		});
 	});
 };
+
+*/
