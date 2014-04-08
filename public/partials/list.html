@@ -1,5 +1,5 @@
 <div class="page-header">
-	<h1>Poll List</h1>
+	<h1>On going events</h1>
 </div>
 <div class="row">
 	<div class="col-xs-5">
@@ -17,9 +17,16 @@
 		<li><em>No events in databases. Would you like to <a href="#/new">create one</a>?</li>
 	</ul>
 	<ul ng-switch-default>
-		<li ng-repeat="event in Events | filter:{open: '!!'}:query">
-			<a href="#/event/{{event._id}}">{{event.name}}</a>
-		</li>
+		<table class="table table-striped">
+			<thead>
+				<td>Club</td>
+				<td>Event Name</td>
+			</thead>
+				<tr ng-repeat="event in Events | filter:{open: '!!', event.name:query}">
+					<td><a href="#/event/{{event._id}}">{{event.club}}</a></td>
+					<td><a href="#/event/{{event._id}}">{{event.name}}</a></td>
+				</tr>
+		</table>
 	</ul>
 </div>
 <p>&nbsp;</p>

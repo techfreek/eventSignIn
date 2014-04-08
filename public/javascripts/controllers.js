@@ -1,6 +1,7 @@
 // Controller for the Event list
 function EventListCtrl($scope, Event) {
 	$scope.Events = Event.query();
+	$scope.query = '';
 }
 
 // Controller for an individual Event
@@ -99,7 +100,7 @@ function EventEditCtrl($scope, $location, Event) {
 		}
 	}
 	$scope.changeView = function() {
-		if($scope.view == false {
+		if($scope.view == false) {
 			edit = false;
 			view = true;
 		}
