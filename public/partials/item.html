@@ -4,8 +4,8 @@
 <div class="well well-lg">
 	<strong>Event</strong><br>{{Event.name}}
 </div>
-<!--ng-hide="Event.userVoted"-->
-<div >
+<!---->
+<div ng-hide="voted">
 	<p class="lead">Please select one of the following options:</p>
 
 	<form role="form" ng-submit="sign()">
@@ -25,13 +25,13 @@
 	</form>
 </div>
 
-<!--ng-show="Event.userVoted"-->
-<div >
-	<table class="result-table">
+<!--n"-->
+<div ng-show="voted">
+	<!--<table class="result-table">
 		<tr ng-repeat="attendee in Event">
 			<td>{{attendee.name}}</td>
 		</tr>
-	</table>
+	</table>-->
 			
 	<p>
 		<em>

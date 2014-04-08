@@ -7,6 +7,7 @@ function EventListCtrl($scope, Event) {
 function EventItemCtrl($scope, $routeParams, socket, Sign, Event) {
 	//console.log($routeParams.eventId);
 	$scope.Event = Event.get({id: $routeParams.eventId});
+	$scope.voted = false;
 	$scope.signature = {
 		name: '',
 		timestamp: '',
@@ -23,12 +24,12 @@ function EventItemCtrl($scope, $routeParams, socket, Sign, Event) {
 	socket.on('signed', function(data) {
 		console.log(data);
 		if(data._id === $routeParams.EventId) {
-			$scope.Event.choices = data.choices;
 			$scope.Event.totalAttendee = data.sigs;
 		}		
 	});
 	
 	$scope.sign = function() {
+		$scope.voted = true;
 		var EventId = $scope.Event._id;
 
 		$scope.signature.EventID = EventId;

@@ -47,7 +47,6 @@ exports.createEvent = function (req, res) {
 		collection.insert(newEvent, {safe: true}, function(err, result) {
 			if (err) {
 				console.log('Error inserting' + JSON.stringify(newEvent));
-				console.log('Error code: ' + err);
 				res.send({'error': 'An error has occured'});
 
 			} else {
@@ -63,7 +62,6 @@ exports.sign = function(socket) {
 		var ip = socket.handshake.headers['x-forwarded-for'] || socket.handshake.address.address;
 		var signatures = 0;
 		data.ip = ip;
-		console.log(data);
 		eventDB.collection('logins', function(err, collection) {
 			collection.insert(data, {safe: true}, function(err, result) {
 				if(err) {
@@ -73,13 +71,12 @@ exports.sign = function(socket) {
 					//socket.broadcast.emit('signed', data)
 				}
 			});
-			collection.count({'EventID':data.eventID}, function(err, result) {
-				console.log("result: " + result);
-				console.log("Error: " + err);
-				//console.log("Length: " + result.length);
+			var tempID = data.EventID;
+			collection.count({'EventID':tempID}, function(err, result) {
+				signatures = result;
+				socket.emit('signed', {name: data.name, sigs: signatures});
 			});
-			//collection.runCommand( {count: 'logins', query: {EventID: new BSON.serialize(data.eventID)}})
-			socket.emit('signed', {name: data.name, sigs: signatures});
+			
 		});
 	});
 };
