@@ -31,6 +31,8 @@ app.get('/', routes.index);
 // MongoDB API Routes
 app.get('/events/events', routes.list);
 app.get('/events/:id', routes.event);
+app.get('/event/detail', routes.detail);
+app.get('/event/:id/edit', routes.edit);
 //app.put('/events', function(){routes.createEvent});
 app.post('/events', routes.createEvent);
 app.post('/sign', routes.sign);

@@ -40,6 +40,30 @@ exports.event = function(req, res) {
 	});
 };
 
+exports.detail = function(req, res) {
+	var id = req.params.id;
+	eventDB.collection('events', function(err, collection) {
+		collection.findOne({'_id':new BSON.ObjectID(id)}, function(err, item) {
+			item.remove.pw;
+			res.send(item);
+
+		});
+	});
+};
+
+exports.validate = function(req, res) {
+	var id = req.params.id;
+	eventDB.collection('events', function(err, collection) {
+		collection.findOne({'_id':new BSON.ObjectID(id)}, function(err, item) {
+			if(item.pw = req.params.pw){
+				res.send({'valid': false});
+			} else {
+				res.send({'valid': true});
+			}
+		});
+	});
+};
+
 exports.createEvent = function (req, res) {
 	var newEvent = req.body;
 	console.log("Adding event" + JSON.stringify(newEvent));
@@ -58,12 +82,16 @@ exports.createEvent = function (req, res) {
 };
 
 exports.edit = function(req, res) {
-	var id = req.params.id;
+	var body = req.body;
 	console.log("Looking up: " + id);
 	eventDB.collection('events', function(err, collection) {
-		collection.findOne({'_id':new BSON.ObjectID(id)}, function(err, item) {
-			res.send(item);
+		collection.update({'_id':new BSON.ObjectID(body.id)}, {$set: {'name': body.name, 'club': body.club, 'open': body.open}}, function(err, object) {
+			res.send(object);
 		});
+		/*collection.findOne({'_id':new BSON.ObjectID(id)}, function(err, item) {
+			item.remove.pw;
+			res.send(item);
+		});*/
 	});
 };
 

@@ -101,19 +101,27 @@ function EventNewCtrl($scope, $location, Event) {
 }
 
 function EventEditCtrl($scope, $routeParams, $location, socket, Sign, Event) {
-	$scope.Event = Event.get({id: $routeParams.eventId});
+	var editEvent = $resource('/events/:id', 
+		{name: '@name', club: '@club', pw: '@pw', open: '@open'},
+		{details: {method: 'GET', url:'/event/detail', params:{id:true}},
+		validate: {method: 'POST', url:'/event/validate', params:{id:true, pw: true}},
+		update: {method:'POST', url:'/event/:id/edit', params:{id: true, name: true; club: true; open: true}}}
+		)
+	$scope.Event = editEvent.$detail({id:$routeParams.eventId});
 	$scope.id = $routeParams.eventId;
 	$scope.loggedin = false;
 	$scope.view = false;
 	$scope.edit = false;
 
 	$scope.login = function() {
-		if($scope.Event.pw == $scope.password)
+		var valid = $scope.Event.$validate({id: $scope.id, pw: $scope.password});
+		console.log("Valid: " + valid);
+		if(valid)
 		{
 			$scope.loggedin = true;
 			console.log("loggedin: " + $scope.loggedin);
 			$scope.view = true;
-			$scope.attendees = Sign.get({EventID: $scope.Event._id})
+			$scope.attendees = Sign.get({EventID: $scope.Event._id}) // Fix me!
 
 		} else {
 			//Nope
