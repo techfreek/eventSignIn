@@ -16,17 +16,23 @@
 	<ul ng-switch-when="0">
 		<li><em>No events in databases. Would you like to <a href="#/new">create one</a>?</li>
 	</ul>
-	<ul ng-switch-default>
-		<table class="table table-striped">
+	<!--<ul ng-switch-default>
+		<li ng-repeat="event in Events | filter:query">
+			<a href="#/event/{{event._id}}">{{event.club}} - {{event.name}}</a>
+		</li>	
+	</ul>-->
+	<table class="table table-striped" ng-switch-default>
 			<thead>
 				<td>Club</td>
 				<td>Event Name</td>
+				<!--<td>Attendees</td>-->
 			</thead>
-				<tr ng-repeat="event in Events | filter:{open: '!!', event.name:query}">
+				<tr ng-repeat="event in Events | filter:query">
 					<td><a href="#/event/{{event._id}}">{{event.club}}</a></td>
 					<td><a href="#/event/{{event._id}}">{{event.name}}</a></td>
 				</tr>
 		</table>
-	</ul>
 </div>
 <p>&nbsp;</p>
+
+<!--/**/-->

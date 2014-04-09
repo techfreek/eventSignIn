@@ -2,7 +2,14 @@
 	<h1>View Event</h1>
 </div>
 <div class="well well-lg">
-	<strong>Event</strong><br>{{Event.name}}
+	<div class="row">
+		<div class="col-xs-6">
+			<strong>Event</strong><br>{{Event.name}} 
+		</div>
+		<div class="col-xs-6">
+			<a href="#/event/edit/{{Event._id}}" class="btn btn-primary pull-right" role="button">Manage Event</a>
+		</div>
+	</div>
 </div>
 <!---->
 <div ng-hide="voted">

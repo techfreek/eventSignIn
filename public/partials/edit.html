@@ -8,13 +8,13 @@
 <div ng-hide="loggedin">
 	<form class-"form-horizontal css-form" role="form" ng-submit="login()" ng-controller="EventEditCtrl">
 		<div class="form-group">
-					<label for="attendeeName">Name</label>
-					<input type="text" class="form-control" ng-model="password" id="AttendeeName" placeholder="Your Name">
+					<label for="attendeeName">Password</label>
+					<input type="text" class="form-control" ng-model="password" id="AttendeeName" placeholder="Event Password">
 				</div>
 			<p><hr></p>
 			<div class="row">
 				<div class="col-xs-6">
-					<a href="#/events" class="btn btn-default" role="button"><span class="glyphicon glyphicon-arrow-left"></span> Back to Event List</a>
+					<a href="#/event/{{id}}" class="btn btn-default" role="button"><span class="glyphicon glyphicon-arrow-left"></span> Back to Event</a>
 				</div>
 				<div class="col-xs-6">
 					<button class="btn btn-primary pull-right" type="submit">Submit &raquo;</button>

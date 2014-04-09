@@ -57,6 +57,16 @@ exports.createEvent = function (req, res) {
 	});
 };
 
+exports.edit = function(req, res) {
+	var id = req.params.id;
+	console.log("Looking up: " + id);
+	eventDB.collection('events', function(err, collection) {
+		collection.findOne({'_id':new BSON.ObjectID(id)}, function(err, item) {
+			res.send(item);
+		});
+	});
+};
+
 exports.sign = function(socket) {
 	socket.on('send:vote', function(data) {
 		var ip = socket.handshake.headers['x-forwarded-for'] || socket.handshake.address.address;

@@ -1,7 +1,25 @@
 // Controller for the Event list
 function EventListCtrl($scope, Event) {
-	$scope.Events = Event.query();
-	$scope.query = '';
+	var tEvents;
+	$scope.Events = Event.query(function() {
+		angular.forEach($scope.Events, function(key, value) {
+			if(key.open == false)
+			{
+				$scope.Events.splice(value, 1);
+			} else {
+				key.fullName = key.club + " " + key.name;
+			}
+
+		});
+		
+	});
+	/*
+	for(var i = 0; i<($scope.Events).length; i++)
+	{
+		$scope.Events[i].fullName = $scope.Events[i].club + " " + $scope.Events[i].name;
+		console.log($scope.Events[i].fullName);
+	}*/
+	//.$scope.query = '';
 }
 
 // Controller for an individual Event
@@ -82,8 +100,9 @@ function EventNewCtrl($scope, $location, Event) {
 	};
 }
 
-function EventEditCtrl($scope, $location, Event) {
+function EventEditCtrl($scope, $routeParams, $location, socket, Sign, Event) {
 	$scope.Event = Event.get({id: $routeParams.eventId});
+	$scope.id = $routeParams.eventId;
 	$scope.loggedin = false;
 	$scope.view = false;
 	$scope.edit = false;
@@ -92,8 +111,9 @@ function EventEditCtrl($scope, $location, Event) {
 		if($scope.Event.pw == $scope.password)
 		{
 			$scope.loggedin = true;
+			console.log("loggedin: " + $scope.loggedin);
 			$scope.view = true;
-			$scope.attendees = Sign.get({EventID: $routeParams.EventId})
+			$scope.attendees = Sign.get({EventID: $scope.Event._id})
 
 		} else {
 			//Nope
