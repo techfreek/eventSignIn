@@ -8,7 +8,7 @@
 <div ng-hide="loggedin">
 	<form class-"form-horizontal css-form" role="form" ng-submit="login()" ng-controller="EventViewCtrl">
 		<div class="form-group">
-					<label for="attendeeName">Password</label>
+					<label for="attendeeName">Password - {{valid}}</label>
 					<input type="text" class="form-control" ng-model="password" id="AttendeeName" placeholder="Event Password">
 				</div>
 			<p><hr></p>

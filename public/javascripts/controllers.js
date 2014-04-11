@@ -92,32 +92,35 @@ function EventNewCtrl($scope, $location, Event) {
 	};
 }
 
-function EventMgmtCtrl($scope, $routeParams, $resource, $location, socket, Sign, Event) {
+function EventMgmtCtrl($scope, $routeParams, $cookies, $resource, $scope) {
 	var id = $routeParams.eventId;
+	$scope.id = id;
 	var editEvent = $resource('/events/:id', 
 		{name: '@name', club: '@club', pw: '@pw', open: '@open'}, {
 		details: {method: 'GET', url:'/event/detail'},
 		validate: {method: 'POST', url:'/event/validate', params:{id: true, pw: true}},
 		update: {method:'POST', url:'/event/:id/edit', params:{id: true, name: true, club: true, open: true}}
 	});
-	$scope.Event = editEvent.details({id: id});
-	
-	$scope.valid = false;
+	$scope.Event = editEvent.details({id: id}, function(res) {
+		$scope.Event = res;
+		//console.log("Res: " + JSON.stringify(res));
+	});
 
 	$scope.login = function() {
+		var valid = false;
 		var pw = $scope.password;
-		$scope.valid = editEvent.validate({id: id, pw: pw});
-		console.log("Valid: " + JSON.stringify($scope.valid));
-		if($scope.valid)
-		{
-			console.log("loggedin: " + JSON.stringify($scope.valid));
-			//$scope.attendees = Sign.get({EventID: $scope.Event._id}) // Fix me!
-		} else {
-			alert("incorrect password");
-			//Nope
-		}
+		editEvent.validate({id: id, pw: pw}, function(res, valid) {
+			$scope.valid = res.validation;
+			console.log("Valid: " + $scope.valid);
+			$cookies.event = {_id: id, signedIn: true};
+			console.log("Cookie: " + JSON.stringify($cookies.event));
+			setTimeout(function(){$scope.$apply(); console.log("Now: " + $scope.valid)}, 10);
+		});	
+		setTimeout(function(){console.log("And now: " + $scope.valid)}, 100);
 	};
-	
+	setTimeout(function(){console.log("And and " + $scope.valid)}, 10000);
+	console.log("login: " + $scope.valid);
+	//console.log("Cookie: " + JSON.stringify($cookies.event));
 }
 
 function EventViewCtrl($scope, $routeParams, $resource, $location, socket, Sign, Event) {

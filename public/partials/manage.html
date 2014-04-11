@@ -2,10 +2,10 @@
 	<h1>Manage Event</h1>
 </div>
 <div class="well well-lg">
-	<strong>Event</strong> - {{Event.name}}<br>
+	<strong>Event</strong> - {{Event.name}}<br />
 </div>
 
-<div ng-hide="valid">
+<div ng-hide="$scope.valid != undefined">
 	<form class-"form-horizontal css-form" role="form" ng-submit="login()" ng-controller="EventMgmtCtrl">
 		<div class="form-group">
 					<label for="attendeeName">Password</label>
@@ -23,13 +23,13 @@
 	</form>
 </div>
 
-<div ng-show="valid">
+<div ng-show="$scope.valid">
 	<div class="row">
 		<div class="col-xs-6">
 			<a href="#/event/{{id}}/view" class="btn btn-default" role="button">View Attendees</a>
-		</div>/
+		</div>
 		<div class="col-xs-6">
-			<a href="#/event/{{id}}/Edit" class="btn btn-default" role="button">Edit Event Details</a>
+			<a href="#/event/{{id}}/Edit" class="btn btn-default pull-right" role="button">Edit Event Details</a>
 		</div>
 	</div>
 </div>

@@ -23,6 +23,7 @@ exports.index = function(req, res) {
 };
 
 exports.list = function (req, res) {
+	console.log("Listing Events");
 	eventDB.collection('events', function(err, collection) {
 		collection.find().toArray(function(err, items) {
 			res.send(items);
@@ -41,8 +42,11 @@ exports.event = function(req, res) {
 };
 
 exports.detail = function(req, res) {
-	var id = req.body.id;
+	var id = req.query.id;
 	console.log("req body: " + JSON.stringify(req.body));
+	console.log("req params: " + JSON.stringify(req.params));
+	console.log("req query: " + JSON.stringify(req.query));
+
 	eventDB.collection('events', function(err, collection) {
 		collection.findOne({'_id':new BSON.ObjectID(id)}, function(err, item) {
 			res.send(item);	
@@ -52,14 +56,19 @@ exports.detail = function(req, res) {
 
 exports.validate = function(req, res) {
 	var id = req.body.id;
+
+	console.log("req body: " + JSON.stringify(req.body));
+	console.log("req params: " + JSON.stringify(req.params));
+	console.log("req query: " + JSON.stringify(req.query));
 	eventDB.collection('events', function(err, collection) {
 		collection.findOne({'_id':new BSON.ObjectID(id)}, function(err, item) {
+			console.log("Validation Error: " + err);
 			if(item.pw === req.body.pw){
 				console.log("Validated!");
-				res.send(true);
+				res.json({validation: true});
 			} else {
 				console.log("Not Validated!");
-				res.send(false);
+				res.json({validation: false});
 			}
 		});
 	});
