@@ -26,12 +26,9 @@ function EventListCtrl($scope, Event) {
 function EventItemCtrl($scope, $routeParams, socket, Sign, Event) {
 	//console.log($routeParams.eventId);
 	$scope.Event = Event.get({id: $routeParams.eventId});
+	$scope.Event.id = $routeParams.eventId;
 	$scope.voted = false;
-	$scope.signature = {
-		name: '',
-		timestamp: '',
-		EventID: ''
-	}
+	$scope.signature = { name: '', timestamp: '', EventID: ''};
 
 	socket.on('signIn', function(data) {
 		console.dir(data);
@@ -69,12 +66,7 @@ function EventItemCtrl($scope, $routeParams, socket, Sign, Event) {
 // Controller for creating a new Event
 function EventNewCtrl($scope, $location, Event) {
 	// Define an empty Event model object
-	$scope.Event = {
-		name: '',
-		club: '',
-		pw: 'For now, this is not encrypted. Please do not use one of your normal passwords',
-		open: true
-	}
+	$scope.Event = {name: '', club: '', pw: 'For now, this is not encrypted. Please do not use one of your normal passwords', open: true};
 	
 	// Validate and save the new Event to the database
 	$scope.createEvent = function() {
@@ -100,39 +92,46 @@ function EventNewCtrl($scope, $location, Event) {
 	};
 }
 
-function EventEditCtrl($scope, $routeParams, $location, socket, Sign, Event) {
+function EventMgmtCtrl($scope, $routeParams, $resource, $location, socket, Sign, Event) {
+	var id = $routeParams.eventId;
 	var editEvent = $resource('/events/:id', 
-		{name: '@name', club: '@club', pw: '@pw', open: '@open'},
-		{details: {method: 'GET', url:'/event/detail', params:{id:true}},
-		validate: {method: 'POST', url:'/event/validate', params:{id:true, pw: true}},
-		update: {method:'POST', url:'/event/:id/edit', params:{id: true, name: true; club: true; open: true}}}
-		)
-	$scope.Event = editEvent.$detail({id:$routeParams.eventId});
-	$scope.id = $routeParams.eventId;
-	$scope.loggedin = false;
-	$scope.view = false;
-	$scope.edit = false;
+		{name: '@name', club: '@club', pw: '@pw', open: '@open'}, {
+		details: {method: 'GET', url:'/event/detail'},
+		validate: {method: 'POST', url:'/event/validate', params:{id: true, pw: true}},
+		update: {method:'POST', url:'/event/:id/edit', params:{id: true, name: true, club: true, open: true}}
+	});
+	$scope.Event = editEvent.details({id: id});
+	
+	$scope.valid = false;
 
 	$scope.login = function() {
-		var valid = $scope.Event.$validate({id: $scope.id, pw: $scope.password});
-		console.log("Valid: " + valid);
-		if(valid)
+		var pw = $scope.password;
+		$scope.valid = editEvent.validate({id: id, pw: pw});
+		console.log("Valid: " + JSON.stringify($scope.valid));
+		if($scope.valid)
 		{
-			$scope.loggedin = true;
-			console.log("loggedin: " + $scope.loggedin);
-			$scope.view = true;
-			$scope.attendees = Sign.get({EventID: $scope.Event._id}) // Fix me!
-
+			console.log("loggedin: " + JSON.stringify($scope.valid));
+			//$scope.attendees = Sign.get({EventID: $scope.Event._id}) // Fix me!
 		} else {
+			alert("incorrect password");
 			//Nope
 		}
-	}
-	$scope.changeView = function() {
-		if($scope.view == false) {
-			edit = false;
-			view = true;
-		}
-	}
+	};
+	
+}
+
+function EventViewCtrl($scope, $routeParams, $resource, $location, socket, Sign, Event) {
+	$scope.id = $routeParams.eventId;
+	var editEvent = $resource('/events/:id', 
+		{name: '@name', club: '@club', pw: '@pw', open: '@open'}, {
+		details: {method: 'GET', url:'/event/detail', params:{id:true}},
+		validate: {method: 'POST', url:'/event/validate', params:{id:true, pw: true}},
+		update: {method:'POST', url:'/event/:id/edit', params:{id: true, name: true, club: true, open: true}},
+		attendees: {method: 'GET', url:'/event/:id/ppl', params:{id: true, pw: true}}
+	});
+
+
+
 	socket.on('sig', function(data) {
 		console.log(data);
 		if(data._id === $routeParams.EventId) {
@@ -140,22 +139,19 @@ function EventEditCtrl($scope, $routeParams, $location, socket, Sign, Event) {
 			$scope.attendees.push(data.user);
 		}		
 	});
-	$scope.updateEvent = function() {
-		if($scope.Event.pw == $scope.password)
-		{
-			var _Event = new Event($scope.Event);
-			_Event.$save(function(p, resp) {
-					if(!p.error) {
-						//If there is no error, redirect to main view
-						$location.path('event');
-						console.log("Success!");
-					} 
-					else {
-						alert('Could not create event');
-						console.log(p);
-					}
-					console.log(resp);
-				});
-		}
-	}
+}
+
+function EventEditCtrl($scope, $routeParams, $resource, $location, socket, Sign, Event) {
+	$scope.id = $routeParams.eventId;
+	var editEvent = $resource('/events/:id', 
+		{name: '@name', club: '@club', pw: '@pw', open: '@open'}, {
+		details: {method: 'GET', url:'/event/detail', params:{id:true}},
+		validate: {method: 'POST', url:'/event/validate', params:{id:true, pw: true}},
+		update: {method:'POST', url:'/event/:id/edit', params:{id: true, name: true, club: true, open: true}}
+	});
+	$scope.Event = editEvent.details({id:$routeParams.eventId});
+	console.log("update");
+	$scope.submit = function() {
+		editEvent.update({id: $scope.id, name: $scope.Event.Name, club: $scope.Event.club, open: $scope.Event.open})
+	};
 }

@@ -41,24 +41,25 @@ exports.event = function(req, res) {
 };
 
 exports.detail = function(req, res) {
-	var id = req.params.id;
+	var id = req.body.id;
+	console.log("req body: " + JSON.stringify(req.body));
 	eventDB.collection('events', function(err, collection) {
 		collection.findOne({'_id':new BSON.ObjectID(id)}, function(err, item) {
-			item.remove.pw;
-			res.send(item);
-
+			res.send(item);	
 		});
 	});
 };
 
 exports.validate = function(req, res) {
-	var id = req.params.id;
+	var id = req.body.id;
 	eventDB.collection('events', function(err, collection) {
 		collection.findOne({'_id':new BSON.ObjectID(id)}, function(err, item) {
-			if(item.pw = req.params.pw){
-				res.send({'valid': false});
+			if(item.pw === req.body.pw){
+				console.log("Validated!");
+				res.send(true);
 			} else {
-				res.send({'valid': true});
+				console.log("Not Validated!");
+				res.send(false);
 			}
 		});
 	});

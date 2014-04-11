@@ -4,11 +4,16 @@ html(lang='en', ng-app='events')
 		meta(charset='utf-8')
 		meta(name='viewport', content='width=device-width, initial-scale=1, user-scalable=no')
 		title Events
+
 		link(rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css')
 		link(rel='stylesheet' href='/stylesheets/style.css')
-		script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.js')
-		script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular-resource.js')
-		script(src='//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js')
+
+		script(src='../bower_components/angular/angular.js')
+		script(src='../bower_components/angular-route/angular-route.js')
+		script(src='../bower_components/angular-cookies/angular-cookies.js')
+		script(src='../bower_components/angular-resource/angular-resource.js')
+
+		script(src='../node_modules/jquery/dist/jquery.min.js')		
 		script(src='//netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js')
 		script(src='/socket.io/socket.io.js')
 		script(src='/javascripts/app.js')

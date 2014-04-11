@@ -1,12 +1,12 @@
 <div class="page-header">
-	<h1>Edit Event</h1>
+	<h1>View Event</h1>
 </div>
 <div class="well well-lg">
 	<strong>Event</strong><br>{{Event.name}}
 </div>
 
 <div ng-hide="loggedin">
-	<form class-"form-horizontal css-form" role="form" ng-submit="login()" ng-controller="EventEditCtrl">
+	<form class-"form-horizontal css-form" role="form" ng-submit="login()" ng-controller="EventViewCtrl">
 		<div class="form-group">
 					<label for="attendeeName">Password</label>
 					<input type="text" class="form-control" ng-model="password" id="AttendeeName" placeholder="Event Password">
@@ -76,18 +76,4 @@
 		</div>
 		<br />
 	</form>
-</div>
-<!--			<form class="form-horizontal css-form" role="form" ng-submit="changeView()" ng-controller="EventEditCtrl">
-			<div class="row">
-				<div class="col-xs-6">
-					<a href="#/events/{{Event.eventId}}" class="btn btn-default" role="button"><span class="glyphicon glyphicon-arrow-left"></span> Back to Event List</a>
-				</div>
-				<div class="col-xs-6">
-					<button class="btn btn-primary pull-right" type="submit" ng-disabled="!loggedin">View Results &raquo;</button>
-				</div>
-			</div>
-		</form>
-	</div>-->
-
-
 </div>

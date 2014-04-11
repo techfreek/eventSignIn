@@ -1,0 +1,35 @@
+<div class="page-header">
+	<h1>Manage Event</h1>
+</div>
+<div class="well well-lg">
+	<strong>Event</strong> - {{Event.name}}<br>
+</div>
+
+<div ng-hide="valid">
+	<form class-"form-horizontal css-form" role="form" ng-submit="login()" ng-controller="EventMgmtCtrl">
+		<div class="form-group">
+					<label for="attendeeName">Password</label>
+					<input type="text" class="form-control" ng-model="password" id="AttendeeName" placeholder="Event Password">
+				</div>
+			<p><hr></p>
+			<div class="row">
+				<div class="col-xs-6">
+					<a href="#/event/{{id}}" class="btn btn-default" role="button"><span class="glyphicon glyphicon-arrow-left"></span> Back to Event</a>
+				</div>
+				<div class="col-xs-6">
+					<button class="btn btn-primary pull-right" type="submit">Submit &raquo;</button>
+				</div>
+			</div>
+	</form>
+</div>
+
+<div ng-show="valid">
+	<div class="row">
+		<div class="col-xs-6">
+			<a href="#/event/{{id}}/view" class="btn btn-default" role="button">View Attendees</a>
+		</div>/
+		<div class="col-xs-6">
+			<a href="#/event/{{id}}/Edit" class="btn btn-default" role="button">Edit Event Details</a>
+		</div>
+	</div>
+</div>
