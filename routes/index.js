@@ -43,6 +43,7 @@ exports.event = function(req, res) {
 
 exports.detail = function(req, res) {
 	var id = req.query.id;
+
 	console.log("req body: " + JSON.stringify(req.body));
 	console.log("req params: " + JSON.stringify(req.params));
 	console.log("req query: " + JSON.stringify(req.query));
@@ -55,7 +56,8 @@ exports.detail = function(req, res) {
 };
 
 exports.validate = function(req, res) {
-	var id = req.body.id;
+	var reqt = req.body;
+	var id = reqt.id;
 
 	console.log("req body: " + JSON.stringify(req.body));
 	console.log("req params: " + JSON.stringify(req.params));
@@ -63,7 +65,7 @@ exports.validate = function(req, res) {
 	eventDB.collection('events', function(err, collection) {
 		collection.findOne({'_id':new BSON.ObjectID(id)}, function(err, item) {
 			console.log("Validation Error: " + err);
-			if(item.pw === req.body.pw){
+			if(item.pw === reqt.pw){
 				console.log("Validated!");
 				res.json({validation: true});
 			} else {

@@ -94,10 +94,11 @@ function EventNewCtrl($scope, $location, Event) {
 
 function EventMgmtCtrl($scope, $routeParams, $cookies, $resource, $scope) {
 	var id = $routeParams.eventId;
+	$scope.valid = false;
 	$scope.id = id;
 	var editEvent = $resource('/events/:id', 
 		{name: '@name', club: '@club', pw: '@pw', open: '@open'}, {
-		details: {method: 'GET', url:'/event/detail'},
+		details: {method: 'GET', url:'/event/detail', params:{id: true}},
 		validate: {method: 'POST', url:'/event/validate', params:{id: true, pw: true}},
 		update: {method:'POST', url:'/event/:id/edit', params:{id: true, name: true, club: true, open: true}}
 	});
@@ -109,17 +110,23 @@ function EventMgmtCtrl($scope, $routeParams, $cookies, $resource, $scope) {
 	$scope.login = function() {
 		var valid = false;
 		var pw = $scope.password;
-		editEvent.validate({id: id, pw: pw}, function(res, valid) {
-			$scope.valid = res.validation;
+		var request = editEvent.validate({id: id, pw: pw});	
+		request.$promise.then(function(resp){$scope.valid = resp.validation; console.log("V: " + $scope.valid);});
+		//console.log("Valid: " + valid);
+		//$scope.valid = valid;
+		/*editEvent.validate({id: id, pw: pw}).$promise.then(function(data) {
+			console.log("Data: " + JSON.stringify(data.validation));
+			console.log("Event: " + JSON.stringify($scope.Event));
+			$scope.valid = data.validation;
 			console.log("Valid: " + $scope.valid);
-			$cookies.event = {_id: id, signedIn: true};
+			//$cookies.event = {_id: id, signedIn: true};
 			console.log("Cookie: " + JSON.stringify($cookies.event));
-			setTimeout(function(){$scope.$apply(); console.log("Now: " + $scope.valid)}, 10);
-		});	
-		setTimeout(function(){console.log("And now: " + $scope.valid)}, 100);
+		});*/
+		//setTimeout(function(){console.log("And now: " + $scope.valid)}, 100);
 	};
-	setTimeout(function(){console.log("And and " + $scope.valid)}, 10000);
-	console.log("login: " + $scope.valid);
+
+	//setTimeout(function(){console.log("And and " + valid)}, 10000);
+	//console.log("login: " + $scope.valid);
 	//console.log("Cookie: " + JSON.stringify($cookies.event));
 }
 
