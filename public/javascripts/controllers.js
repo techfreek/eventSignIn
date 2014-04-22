@@ -92,9 +92,8 @@ function EventNewCtrl($scope, $location, Event) {
 	};
 }
 
-function EventMgmtCtrl($scope, $routeParams, $cookies, $resource, $scope) {
+function EventMgmtCtrl($scope, $routeParams, $cookies, $resource, $scope, Restangular) {
 	var id = $routeParams.eventId;
-	$scope.valid = false;
 	$scope.id = id;
 	var editEvent = $resource('/events/:id', 
 		{name: '@name', club: '@club', pw: '@pw', open: '@open'}, {
@@ -110,24 +109,13 @@ function EventMgmtCtrl($scope, $routeParams, $cookies, $resource, $scope) {
 	$scope.login = function() {
 		var valid = false;
 		var pw = $scope.password;
-		var request = editEvent.validate({id: id, pw: pw});	
-		request.$promise.then(function(resp){$scope.valid = resp.validation; console.log("V: " + $scope.valid);});
-		//console.log("Valid: " + valid);
-		//$scope.valid = valid;
-		/*editEvent.validate({id: id, pw: pw}).$promise.then(function(data) {
-			console.log("Data: " + JSON.stringify(data.validation));
-			console.log("Event: " + JSON.stringify($scope.Event));
-			$scope.valid = data.validation;
-			console.log("Valid: " + $scope.valid);
-			//$cookies.event = {_id: id, signedIn: true};
-			console.log("Cookie: " + JSON.stringify($cookies.event));
-		});*/
-		//setTimeout(function(){console.log("And now: " + $scope.valid)}, 100);
-	};
+		Restangular.all('validate').post({'pw': pw, 'id': $scope.id}).then(function(res){
+			console.log("Response: " + res.validation);
+			$scope.valid = res.validation;
 
-	//setTimeout(function(){console.log("And and " + valid)}, 10000);
-	//console.log("login: " + $scope.valid);
-	//console.log("Cookie: " + JSON.stringify($cookies.event));
+		});
+		setTimeout(function(){$scope.$apply(); console.log("Scope valid: " + $scope.valid); }, 2000);
+	};
 }
 
 function EventViewCtrl($scope, $routeParams, $resource, $location, socket, Sign, Event) {

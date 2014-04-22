@@ -5,10 +5,10 @@
 	<strong>Event</strong> - {{Event.name}}<br />
 </div>
 
-<div ng-hide="valid">
+<div ng-hide="valid" class="ng-hide">
 	<form class-"form-horizontal css-form" role="form" ng-submit="login()" ng-controller="EventMgmtCtrl">
 		<div class="form-group">
-					<label for="attendeeName">Password</label>
+					<label for="attendeeName">Password - {{valid}}</label>
 					<input type="text" class="form-control" ng-model="password" id="AttendeeName" placeholder="Event Password">
 				</div>
 			<p><hr></p>
@@ -23,7 +23,7 @@
 	</form>
 </div>
 
-<div ng-show="$scope.valid">
+<div ng-show="valid" class="ng-hide">
 	<div class="row">
 		<div class="col-xs-6">
 			<a href="#/event/{{id}}/view" class="btn btn-default" role="button">View Attendees</a>

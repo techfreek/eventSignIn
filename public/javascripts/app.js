@@ -1,5 +1,5 @@
 // Angular module, defining routes for the app
-angular.module('events', ['eventServices', 'ngRoute', 'ngCookies']).
+angular.module('events', ['eventServices', 'ngRoute', 'ngCookies', 'restangular']).
 	config(['$routeProvider', function($routeProvider) {
 		$routeProvider.when('/events', { templateUrl: 'partials/list.html', controller: EventListCtrl })
 		$routeProvider.when('/event/:eventId', { templateUrl: 'partials/item.html', controller: EventItemCtrl })

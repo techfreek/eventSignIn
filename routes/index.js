@@ -56,21 +56,20 @@ exports.detail = function(req, res) {
 };
 
 exports.validate = function(req, res) {
-	var reqt = req.body;
-	var id = reqt.id;
-
 	console.log("req body: " + JSON.stringify(req.body));
 	console.log("req params: " + JSON.stringify(req.params));
 	console.log("req query: " + JSON.stringify(req.query));
+	var pw = req.body.pw;
+	var id = req.body.id;
 	eventDB.collection('events', function(err, collection) {
 		collection.findOne({'_id':new BSON.ObjectID(id)}, function(err, item) {
 			console.log("Validation Error: " + err);
-			if(item.pw === reqt.pw){
+			if(item.pw === pw){
 				console.log("Validated!");
 				res.json({validation: true});
 			} else {
 				console.log("Not Validated!");
-				res.json({validation: false});
+				res.json({'validation': false});
 			}
 		});
 	});
